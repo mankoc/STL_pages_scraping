@@ -1,15 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
-from PIL import Image
-from io import BytesIO
+from utils import create_dir
 import json
+import os
+from os import path as op
 
-model_name="b1-battle-droid"
-URL = f"https://cults3d.com/es/modelo-3d/arte/wolverine-jonatanvogel"
-
-OUTPUT_DIR="h:\\temp\\"
 # Press the green button in the gutter to run the script.
-if __name__ == '__main__':
+def scrape_cults(URL,OUTPUT_DIR):
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
     #images=soup.find_all("div", class_="thumb-list-wrapper js-list-wrapper")
@@ -24,21 +21,27 @@ if __name__ == '__main__':
             "tags": [a.text for a in soup.find_all("a",{"rel":"tag"})]
     }
 
-    with open(f"{OUTPUT_DIR}INFO.json","w") as f:
+    main_dir=os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"])
+    files_dir=os.path.join(main_dir,"Files")
+    images_dir = os.path.join(main_dir, "Images")
+    create_dir(main_dir)
+    create_dir(files_dir)
+    create_dir(images_dir)
+
+    with open(op.join(main_dir,"INFO.json"),"w") as f:
         json.dump(info,f,indent=4)
 
     counter =1
 
     title =''.join(e for e in soup.find("title").text if e.isspace() or e.isalnum())
-    with open(f"{OUTPUT_DIR}{title}.url","wt") as f:
+
+    with open(op.join(main_dir,f"cults - {title}.url"),"wt") as f:
         f.write("[InternetShortcut]\n")
         f.write(f"URL={URL}")
 
     for block in images:
             image=block.find("source")
             try:
-
-
                 if "srcset" in image.attrs:
                     image_link = image['srcset']
                 else:
@@ -49,7 +52,7 @@ if __name__ == '__main__':
                         filename = image_link.split("/")[-1]
                         spl = filename.split(".")
                         print(filename)
-                        with open(f"{OUTPUT_DIR}{spl[0]}-{counter}.{spl[1]}","wb") as f:
+                        with open(op.join(images_dir,f"{spl[0]}-{counter}.{spl[1]}"),"wb") as f:
                             f.write(imfile.content)
                             counter+=1
             except Exception:
