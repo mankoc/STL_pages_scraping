@@ -7,6 +7,7 @@ from io import BytesIO
 import json
 OUTPUT_DIR="h:\\temp\\GB Imgs"
 import re
+import asyncio
 
 def get_images(soup, out_dir,model_id):
     output_path = out_dir / "Images"
@@ -15,19 +16,24 @@ def get_images(soup, out_dir,model_id):
     imgprv=soup.find_all("div", {'data-image-url': True} )
 
     for image in imgprv:
-        kkk=0
-        try:
-            image_link= image['data-image-url'].replace("_xs","")
-            filename=image_link.split("/")[-1]
-            spl=filename.split(".")
-            # if spl[1]=='png' and "x" in spl[0]:
-            if True:
-                imfile=requests.get(image_link)
-                if imfile.ok:
-                    with open(output_path/f"{model_id} - {spl[0]}.{spl[1]}","wb") as f:
-                        f.write(imfile.content)
-        except Exception:
-            pass
+        get_image(image, model_id, output_path)
+
+
+def get_image(image, model_id, output_path):
+    kkk = 0
+    try:
+        image_link = image['data-image-url'].replace("_xs", "")
+        filename = image_link.split("/")[-1]
+        spl = filename.split(".")
+        # if spl[1]=='png' and "x" in spl[0]:
+        if True:
+            imfile = requests.get(image_link, stream=True)
+            if imfile.ok:
+                with open(output_path / f"{model_id} - {spl[0]}.{spl[1]}", "wb") as f:
+                    f.write(imfile.content)
+    except Exception:
+        pass
+
 
 def write_url(out_dir,title,URL):
     with open(out_dir/f"{title}.url","wt") as f:
@@ -64,7 +70,7 @@ def write_info(out_dir, soup,row):
         json.dump(output_json, f, indent=4,ensure_ascii=False)
 
 
-def process_row():
+def process_row(row):
     model_id = f"{row.id:04d}"
     model_name = re.sub('[^\w\-_\. ]', '_', row.title.split(" 3D")[0])
     out_dir = path / f"{model_id} - {model_name.strip()}"
@@ -88,9 +94,12 @@ if __name__ == '__main__':
     path = Path(OUTPUT_DIR)
     list_file=pd.read_csv("f:\\STL\\08 - Gambody\\products.txt",sep='\t')
 
-    for i,row in list_file.iterrows():
-        process_row()
-        kk=0
+    a=[process_row(list_file.iloc[row]) for row in range(len(list_file.index))]
+
+    # for i,row in list_file.iterrows():
+    #     process_row(row)
+    #     # asyncio.run(process_row(row))
+    #     kk=0
 
 
 
