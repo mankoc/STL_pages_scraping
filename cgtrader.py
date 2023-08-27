@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from utils import create_dir
+from utils import create_dir,clean_tags,clean_useless_names
 from io import BytesIO
 import json
 import os
@@ -14,13 +14,13 @@ def scrape_cgtrader(URL,OUTPUT_DIR):
     images=soup.find("div", class_="product-carousel__thumbs").find_all("img")
 
     counter =1
-
+    model_name= clean_useless_names(soup.find("h1",{"class":"product-header__title", "itemprop":"name"}).text.strip())
     info={
-            "name": soup.find("h1",{"class":"product-header__title", "itemprop":"name"}).text.strip(),
+            "name": model_name,
             "author": soup.find("div",{"class":"username"}).text,
             "distributor": "cgtrader",
             "url": URL,
-            "description": soup.find("div",{"class":"product-description"}).find("p").text,
+            "description": clean_tags(soup.find("div",{"class":"product-description"}).text),
             "tags": [a.text for a in soup.find_all("li",{"class":"label"})]
     }
 
@@ -32,9 +32,11 @@ def scrape_cgtrader(URL,OUTPUT_DIR):
     create_dir(images_dir)
 
     title =''.join(e for e in soup.find("title").text if e.isspace() or e.isalnum())
+
     with open(os.path.join(main_dir,f"{title}.url"),"wt") as f:
         f.write("[InternetShortcut]\n")
         f.write(f"URL={URL}")
+
     with open(os.path.join(main_dir,f"INFO.json"),"w") as f:
         json.dump(info,f,indent=4)
 
