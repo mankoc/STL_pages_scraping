@@ -18,14 +18,14 @@ def scrape_artstation(URL,OUTPUT_DIR):
 
     info = {
         "name": response["title"],
-        "author": response["user"]["username"],
+        "author": response["user"]["full_name"],
         "distributor": "Artstation",
         "url": URL,
         "description": clean_tags(response["description"]),
         "tags": response["tags"]
     }
 
-    main_dir = os.path.join(OUTPUT_DIR, info["name"] + " - " + info["author"])
+    main_dir = os.path.join(OUTPUT_DIR, f'{info["name"]} - {info["author"]}'.replace(":","").replace("  "," "))
     files_dir = os.path.join(main_dir, "Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)

@@ -21,6 +21,7 @@ def clean_useless_names(name):
     a=["Fan Art", "Statue", "3d Printable",
        "3D print model",
        "model"]
+
     for replacement in a:
         pattern = re.compile(replacement, re.IGNORECASE)
         name=pattern.sub("", name)
