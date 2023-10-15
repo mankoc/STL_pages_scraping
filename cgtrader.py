@@ -56,6 +56,7 @@ def scrape_cgtrader(URL,OUTPUT_DIR):
                                 counter+=1
             except Exception:
                 pass
+    return OUTPUT_DIR
 
 
 

@@ -6,6 +6,9 @@ import os
 from os import path as op
 import urllib
 from utils import clean_tags,write_url
+from pathvalidate import sanitize_filepath
+
+
 # Press the green button in the gutter to run the script.
 def scrape_artstation(URL,OUTPUT_DIR):
 
@@ -13,6 +16,8 @@ def scrape_artstation(URL,OUTPUT_DIR):
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}  # This is chrome, you can set whatever browser you like
 
     ID=URL.split("/")[-1]
+
+
     url=f"https://www.artstation.com/projects/{ID}.json"
     response = requests.get(url,headers=headers).json()
 
@@ -25,7 +30,7 @@ def scrape_artstation(URL,OUTPUT_DIR):
         "tags": response["tags"]
     }
 
-    main_dir = os.path.join(OUTPUT_DIR, f'{info["name"]} - {info["author"]}'.replace(":","").replace("  "," "))
+    main_dir = sanitize_filepath(os.path.join(OUTPUT_DIR, f'{info["name"]} - {info["author"]}'.replace(":","").replace("  "," ").replace("/","-")))
     files_dir = os.path.join(main_dir, "Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)
@@ -44,9 +49,6 @@ def scrape_artstation(URL,OUTPUT_DIR):
             filename = image_link.split("?")[0].split("/")[-1]
             spl = filename.split(".")
             print(filename)
-            with open(os.path.join(images_dir, f"{spl[0]}.{spl[1]}"), "wb") as f:
+            with open(sanitize_filepath(os.path.join(images_dir, f"{spl[0]}.{spl[1]}")), "wb") as f:
                 f.write(imfile.content)
-
-
-
-
+    return main_dir

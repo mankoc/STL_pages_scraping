@@ -57,6 +57,6 @@ def scrape_cults(URL,OUTPUT_DIR):
                             counter+=1
             except Exception:
                 pass
-
+    return main_dir
 
 

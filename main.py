@@ -5,10 +5,6 @@ from pathlib import Path
 URL = f"https://cults3d.com/es/modelo-3d/variado/psylocke-janter"
 
 
-
-
-
-
 OUTPUT_DIR="h:\\temp\\"
 
 with open("h:\\temp\\urls.txt", "r") as f:
@@ -16,6 +12,7 @@ with open("h:\\temp\\urls.txt", "r") as f:
 
 for URL in urls:
     URL=URL.replace("\n","")
+
     if "cgtrader.com" in URL:
         cgtrader.scrape_cgtrader(URL,OUTPUT_DIR)
     if "cults3d" in URL:
@@ -23,3 +20,6 @@ for URL in urls:
         scrape_cults(URL,OUTPUT_DIR)
     if "artstation" in URL:
         scrape_artstation(URL, OUTPUT_DIR)
+
+
+

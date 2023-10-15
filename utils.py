@@ -1,5 +1,6 @@
 import os
 import re
+from pathvalidate import sanitize_filepath
 def create_dir(newpath):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
@@ -12,8 +13,10 @@ def clean_tags(input):
 
 def write_url(main_dir,info):
     title=info["name"] + " - " + info["author"]
+
+    title=title.replace("/","-")
     URL=info["url"]
-    with open(os.path.join(main_dir,f"{title}.url"),"wt") as f:
+    with open(sanitize_filepath(os.path.join(main_dir,f"{title}.url")),"wt") as f:
         f.write("[InternetShortcut]\n")
         f.write(f"URL={URL}")
 
