@@ -37,7 +37,7 @@ def scrape_cgtrader(URL,OUTPUT_DIR):
         f.write("[InternetShortcut]\n")
         f.write(f"URL={URL}")
 
-    with open(os.path.join(main_dir,f"INFO.json"),"w") as f:
+    with open(os.path.join(main_dir, f"../INFO.json"), "w") as f:
         json.dump(info,f,indent=4)
 
     for image in images:

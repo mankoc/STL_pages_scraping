@@ -1,8 +1,7 @@
-import cgtrader
-from cults import scrape_cults
-from artstation import scrape_artstation
-from myminifactory import scrape_myminifactory
-from pathlib import Path
+from Scrapers import cgtrader
+from Scrapers.cults import scrape_cults
+from Scrapers.artstation import scrape_artstation
+
 URL = f"https://cults3d.com/es/modelo-3d/variado/psylocke-janter"
 
 
@@ -16,7 +15,7 @@ for URL in urls:
     URL=URL.replace("\n","")
 
     if "cgtrader.com" in URL:
-        cgtrader.scrape_cgtrader(URL,OUTPUT_DIR)
+        cgtrader.scrape_cgtrader(URL, OUTPUT_DIR)
     if "cults3d" in URL:
         URL=URL.replace("https://cults3d.com/es/modelo-3d/arte/","https://cults3d.com/en/3d-model/art/")
         scrape_cults(URL,OUTPUT_DIR)

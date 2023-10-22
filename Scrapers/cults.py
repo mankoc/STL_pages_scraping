@@ -28,7 +28,7 @@ def scrape_cults(URL,OUTPUT_DIR):
     create_dir(files_dir)
     create_dir(images_dir)
 
-    with open(op.join(main_dir,"INFO.json"),"w") as f:
+    with open(op.join(main_dir, "../INFO.json"), "w") as f:
         json.dump(info,f,indent=4)
 
     counter =1

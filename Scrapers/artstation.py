@@ -10,15 +10,15 @@ from pathvalidate import sanitize_filepath
 
 
 # Press the green button in the gutter to run the script.
-def scrape_myminifactory(URL,OUTPUT_DIR):
+def scrape_artstation(URL,OUTPUT_DIR):
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}  # This is chrome, you can set whatever browser you like
 
+    ID=URL.split("/")[-1]
 
-    url=URL
 
-
+    url=f"https://www.artstation.com/projects/{ID}.json"
     response = requests.get(url,headers=headers).json()
 
     info = {
@@ -30,14 +30,14 @@ def scrape_myminifactory(URL,OUTPUT_DIR):
         "tags": response["tags"]
     }
 
-    main_dir = sanitize_filepath(os.path.join(OUTPUT_DIR, clean_path(f'{info["name"]} - {info["author"]}')))
+    main_dir = clean_path(os.path.join(OUTPUT_DIR, f'{info["name"]} - {info["author"]}'))
     files_dir = os.path.join(main_dir, "Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)
     create_dir(files_dir)
     create_dir(images_dir)
 
-    with open(os.path.join(main_dir, f"INFO.json"), "w") as f:
+    with open(os.path.join(main_dir, f"../INFO.json"), "w") as f:
         json.dump(info, f, indent=4)
 
     write_url(main_dir,info)
