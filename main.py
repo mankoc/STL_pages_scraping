@@ -1,14 +1,16 @@
 import cgtrader
 from cults import scrape_cults
 from artstation import scrape_artstation
+from myminifactory import scrape_myminifactory
 from pathlib import Path
 URL = f"https://cults3d.com/es/modelo-3d/variado/psylocke-janter"
 
 
 OUTPUT_DIR="h:\\temp\\"
 
-with open("h:\\temp\\urls.txt", "r") as f:
-    urls=f.readlines()
+#with open("h:\\temp\\urls.txt", "r") as f:
+#    urls=f.readlines()
+urls=["https://www.cgtrader.com/3d-print-models/miniatures/figurines/andrea-pirate-girls-vol-1"]
 
 for URL in urls:
     URL=URL.replace("\n","")
@@ -20,6 +22,8 @@ for URL in urls:
         scrape_cults(URL,OUTPUT_DIR)
     if "artstation" in URL:
         scrape_artstation(URL, OUTPUT_DIR)
+#    if "myminifactory" in URL:
+#        output = scrape_myminifactory(URL, OUTPUT_DIR)
 
 
 

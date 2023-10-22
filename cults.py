@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from utils import create_dir
+from utils import create_dir,clean_path
 import json
 import os
 from os import path as op
@@ -21,7 +21,7 @@ def scrape_cults(URL,OUTPUT_DIR):
             "tags": [a.text for a in soup.find_all("a",{"rel":"tag"})]
     }
 
-    main_dir=os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"])
+    main_dir=clean_path(os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"]))
     files_dir=os.path.join(main_dir,"Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)

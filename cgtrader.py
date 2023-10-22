@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from utils import create_dir,clean_tags,clean_useless_names
+from utils import create_dir,clean_tags,clean_useless_names,clean_path
 from io import BytesIO
 import json
 import os
@@ -24,7 +24,7 @@ def scrape_cgtrader(URL,OUTPUT_DIR):
             "tags": [a.text for a in soup.find_all("li",{"class":"label"})]
     }
 
-    main_dir=os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"])
+    main_dir=clean_path(os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"]))
     files_dir=os.path.join(main_dir,"Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)

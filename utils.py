@@ -5,7 +5,8 @@ def create_dir(newpath):
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 
-
+def clean_path(path):
+    return sanitize_filepath(path.replace(":", "").replace("  ", " ").replace("/", "-"))
 def clean_tags(input):
     cleaner=re.compile(('<.*?>'))
     output=re.sub(cleaner,"",input)
