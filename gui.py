@@ -3,10 +3,15 @@ from Scrapers import cgtrader
 from Scrapers.cults import scrape_cults
 from Scrapers.artstation import scrape_artstation
 from Scrapers.myminifactory import scrape_myminifactory
-#sg.theme_previewer()
+import json
+
 sg.theme('LightGrey3')   # Add a touch of color
 # All the stuff inside your window.
-default_dir="D:\\Telegram"
+with open("config.json", "rt") as f:
+    config = json.load(f)
+
+
+default_dir=config["default_dir"]
 layout = [  [sg.Text('Url:'), sg.InputText()],
             [sg.Text(f'Output:'),sg.InputText(default_dir), sg.FolderBrowse("Change",initial_folder =default_dir)],
             [sg.Push(),sg.Button('Ok'), sg.Button('Cancel')] ,
@@ -17,6 +22,7 @@ window = sg.Window('Download info', layout)
 # Event Loop to process "events" and get the "values" of the inputs
 while True:
     event, values = window.read()
+
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
         break
     URL=values[0]

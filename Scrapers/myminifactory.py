@@ -16,8 +16,9 @@ def scrape_myminifactory(URL,OUTPUT_DIR):
     url=f"https://www.myminifactory.com/api/v2/objects/{code}"
 
 
-    with open("myminifactory_session.txt","rt") as f:
-        sess=f.read()
+    with open("config.json","rt") as f:
+        config=json.load(f)
+    sess=config["myminifactory"]["SESSID"]
     cookies={"SESSID":sess}
 
     #TODO: check session response.
