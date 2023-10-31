@@ -12,19 +12,21 @@ from pathvalidate import sanitize_filepath
 # Press the green button in the gutter to run the script.
 def scrape_myminifactory(URL,OUTPUT_DIR):
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'}  # This is chrome, you can set whatever browser you like
+    code=URL.split("-")[-1]
+    url=f"https://www.myminifactory.com/api/v2/objects/{code}"
 
 
-    url=URL
+    with open("myminifactory_session.txt","rt") as f:
+        sess=f.read()
+    cookies={"SESSID":sess}
 
-
-    response = requests.get(url,headers=headers).json()
+    #TODO: check session response.
+    response = requests.get(url,cookies=cookies).json()
 
     info = {
-        "name": response["title"],
-        "author": response["user"]["full_name"],
-        "distributor": "Artstation",
+        "name": response["name"],
+        "author": response["designer"]["username"],
+        "distributor": "MyMiniFactory",
         "url": URL,
         "description": clean_tags(response["description"]),
         "tags": response["tags"]
@@ -37,14 +39,14 @@ def scrape_myminifactory(URL,OUTPUT_DIR):
     create_dir(files_dir)
     create_dir(images_dir)
 
-    with open(os.path.join(main_dir, f"../INFO.json"), "w") as f:
+    with open(os.path.join(main_dir, f"INFO.json"), "w") as f:
         json.dump(info, f, indent=4)
 
     write_url(main_dir,info)
 
-    for img in response["assets"]:
-        image_link=img["image_url"]
-        imfile=requests.get(image_link,headers=headers)
+    for img in response["images"]:
+        image_link=img["large"]["url"]
+        imfile=requests.get(image_link,cookies=cookies)
         if imfile.ok:
             filename = image_link.split("?")[0].split("/")[-1]
             spl = filename.split(".")

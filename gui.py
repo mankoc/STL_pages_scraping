@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 from Scrapers import cgtrader
 from Scrapers.cults import scrape_cults
 from Scrapers.artstation import scrape_artstation
-
+from Scrapers.myminifactory import scrape_myminifactory
 #sg.theme_previewer()
 sg.theme('LightGrey3')   # Add a touch of color
 # All the stuff inside your window.
@@ -33,8 +33,8 @@ while True:
         output=scrape_cults(URL, OUTPUT_DIR)
     if "artstation" in URL:
         output= scrape_artstation(URL, OUTPUT_DIR)
-    #if "myminifactory" in URL:
-    #    output= scrape_myminifactory(URL,OUTPUT_DIR)
+    if "myminifactory" in URL:
+       output= scrape_myminifactory(URL,OUTPUT_DIR)
     outp=f"DONE"
     window['statusbar'].update(outp)
     window.refresh()

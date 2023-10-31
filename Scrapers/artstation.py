@@ -37,7 +37,7 @@ def scrape_artstation(URL,OUTPUT_DIR):
     create_dir(files_dir)
     create_dir(images_dir)
 
-    with open(os.path.join(main_dir, f"../INFO.json"), "w") as f:
+    with open(os.path.join(main_dir, f"INFO.json"), "w") as f:
         json.dump(info, f, indent=4)
 
     write_url(main_dir,info)
