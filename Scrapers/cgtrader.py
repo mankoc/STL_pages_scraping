@@ -4,7 +4,7 @@ from utils import create_dir,clean_tags,clean_useless_names,clean_path
 from io import BytesIO
 import json
 import os
-
+from pathlib import Path
 
 # Press the green button in the gutter to run the script.
 def scrape_cgtrader(URL,OUTPUT_DIR):
@@ -23,8 +23,8 @@ def scrape_cgtrader(URL,OUTPUT_DIR):
             "description": clean_tags(soup.find("div",{"class":"product-description"}).text),
             "tags": [a.text for a in soup.find_all("li",{"class":"label"})]
     }
-
-    main_dir=clean_path(os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"]))
+    main_dir=Path(OUTPUT_DIR) / (info["name"]+" - "+info["author"])
+    #main_dir=clean_path(os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"]))
     files_dir=os.path.join(main_dir,"Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)
@@ -37,7 +37,7 @@ def scrape_cgtrader(URL,OUTPUT_DIR):
         f.write("[InternetShortcut]\n")
         f.write(f"URL={URL}")
 
-    with open(os.path.join(main_dir, f"../INFO.json"), "w") as f:
+    with open(os.path.join(main_dir, f"INFO.json"), "w") as f:
         json.dump(info,f,indent=4)
 
     for image in images:

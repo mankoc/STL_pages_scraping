@@ -4,7 +4,7 @@ from utils import create_dir,clean_path
 import json
 import os
 from os import path as op
-
+from pathlib import Path
 # Press the green button in the gutter to run the script.
 def scrape_cults(URL,OUTPUT_DIR):
     page = requests.get(URL)
@@ -21,7 +21,7 @@ def scrape_cults(URL,OUTPUT_DIR):
             "tags": [a.text for a in soup.find_all("a",{"rel":"tag"})]
     }
 
-    main_dir=clean_path(os.path.join(OUTPUT_DIR,info["name"]+" - "+info["author"]))
+    main_dir=Path(OUTPUT_DIR) / (info["name"]+" - "+info["author"])
     files_dir=os.path.join(main_dir,"Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)

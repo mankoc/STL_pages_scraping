@@ -7,7 +7,7 @@ from os import path as op
 import urllib
 from utils import clean_tags,write_url,clean_path
 from pathvalidate import sanitize_filepath
-
+from pathlib import Path
 
 # Press the green button in the gutter to run the script.
 def scrape_artstation(URL,OUTPUT_DIR):
@@ -30,7 +30,7 @@ def scrape_artstation(URL,OUTPUT_DIR):
         "tags": response["tags"]
     }
 
-    main_dir = clean_path(os.path.join(OUTPUT_DIR, f'{info["name"]} - {info["author"]}'))
+    main_dir=Path(OUTPUT_DIR) / (info["name"]+" - "+info["author"])
     files_dir = os.path.join(main_dir, "Files")
     images_dir = os.path.join(main_dir, "Images")
     create_dir(main_dir)
