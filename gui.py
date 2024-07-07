@@ -1,8 +1,9 @@
 import PySimpleGUI as sg
 from Scrapers import cgtrader
 from Scrapers.cults import scrape_cults
-from Scrapers.artstation import scrape_artstation
+from Scrapers.artstation import scrape_artstation,scrape_artstation_json
 from Scrapers.myminifactory import scrape_myminifactory
+from Scrapers.stlflix import scrape_stlflix
 import json
 
 sg.theme('LightGrey3')   # Add a touch of color
@@ -38,9 +39,19 @@ while True:
         URL = URL.replace("https://cults3d.com/es/modelo-3d/arte/", "https://cults3d.com/en/3d-model/art/")
         output=scrape_cults(URL, OUTPUT_DIR)
     if "artstation" in URL:
-        output= scrape_artstation(URL, OUTPUT_DIR)
+         json_resp=sg.popup_get_text("Copy url in browser and paste output json here",default_text=scrape_artstation(URL,OUTPUT_DIR))
+
+         output = scrape_artstation_json(json_resp, OUTPUT_DIR)
+         #sg.popup(f"Paste this url and put json {scrape_artstation(URL,OUTPUT_DIR)}")
+#        output= scrape_artstation(URL, OUTPUT_DIR)
+         pass
     if "myminifactory" in URL:
        output= scrape_myminifactory(URL,OUTPUT_DIR)
+    if "stlflix" in URL:
+        output=scrape_stlflix(URL,OUTPUT_DIR)
+    if URL[0]=="{":
+
+        pass
     outp=f"DONE"
     window['statusbar'].update(outp)
     window.refresh()

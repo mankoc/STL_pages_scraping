@@ -1,15 +1,15 @@
 from Scrapers import cgtrader
 from Scrapers.cults import scrape_cults
 from Scrapers.artstation import scrape_artstation
+from Scrapers.stlflix import scrape_stlflix
 
-URL = f"https://cults3d.com/es/modelo-3d/variado/psylocke-janter"
 
 
 OUTPUT_DIR="h:\\temp\\"
 
 #with open("h:\\temp\\urls.txt", "r") as f:
 #    urls=f.readlines()
-urls=["https://www.cgtrader.com/3d-print-models/miniatures/figurines/andrea-pirate-girls-vol-1"]
+urls=["https://platform.stlflix.com/es/product/town-guard-02"]
 
 for URL in urls:
     URL=URL.replace("\n","")
@@ -23,6 +23,8 @@ for URL in urls:
         scrape_artstation(URL, OUTPUT_DIR)
 #    if "myminifactory" in URL:
 #        output = scrape_myminifactory(URL, OUTPUT_DIR)
+    if "stlflix" in URL:
+        output=scrape_stlflix(URL,OUTPUT_DIR)
 
 
 

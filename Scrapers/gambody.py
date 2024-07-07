@@ -2,10 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from pathlib import Path
+import os
 from PIL import Image
 from io import BytesIO
 import json
-OUTPUT_DIR="h:\\temp\\GB Imgs"
+OUTPUT_DIR="f:\\STL\\08 - Gambody\\Missing"
 import re
 import asyncio
 
@@ -74,6 +75,8 @@ def process_row(row):
     model_id = f"{row.id:04d}"
     model_name = re.sub('[^\w\-_\. ]', '_', row.title.split(" 3D")[0])
     out_dir = path / f"{model_id} - {model_name.strip()}"
+    if not os.path.isdir(out_dir/"Files"):
+        os.makedirs(out_dir/"Files")
     infoname = out_dir / "INFO.txt"
     if infoname.is_file():
         print(f"{out_dir} existe")
@@ -93,7 +96,7 @@ def process_row(row):
 if __name__ == '__main__':
     path = Path(OUTPUT_DIR)
     list_file=pd.read_csv("f:\\STL\\08 - Gambody\\products.txt",sep='\t')
-
+    list_file=list_file[list_file["id"]>2236]
     a=[process_row(list_file.iloc[row]) for row in range(len(list_file.index))]
 
     # for i,row in list_file.iterrows():
