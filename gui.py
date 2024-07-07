@@ -1,4 +1,4 @@
-import PySimpleGUI as sg
+import FreeSimpleGUI as sg
 from Scrapers import cgtrader
 from Scrapers.cults import scrape_cults
 from Scrapers.artstation import scrape_artstation,scrape_artstation_json
@@ -6,7 +6,7 @@ from Scrapers.myminifactory import scrape_myminifactory
 from Scrapers.stlflix import scrape_stlflix
 import json
 
-sg.theme('LightGrey3')   # Add a touch of color
+# sg.theme('LightGrey3')   # Add a touch of color
 # All the stuff inside your window.
 with open("config.json", "rt") as f:
     config = json.load(f)

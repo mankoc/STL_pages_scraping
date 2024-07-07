@@ -1,2 +1,4 @@
-pysimplegui
-tkinter
+freesimplegui
+requests
+beautifulsoup4
+pathvalidate
